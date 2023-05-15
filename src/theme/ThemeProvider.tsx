@@ -37,14 +37,11 @@ type ThemeContextProviderProps = {
 };
 type ThemeContextType = {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme?: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
-  toggleTheme: () => {
-    console.log("");
-  },
 });
 
 export const ThemeProvider = ({
