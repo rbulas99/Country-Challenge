@@ -10,21 +10,23 @@ const Header = () => {
       <Logo theme={theme}>Where in the world?</Logo>
       <ThemeButton onClick={toggleTheme} theme={theme}>
         <BsMoon />
-        {theme.theme}
+        {theme.theme === "Light" ? "Dark Mode" : "Light Mode"}
       </ThemeButton>
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header<{ theme: Theme }>`
-  background-color: ${({ theme }) => theme.colors.elements};
   position: sticky;
+  top: 0px;
   z-index: 100;
-  height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 3.5rem;
+  width: 100%;
   padding: 0 20px;
+  background-color: ${({ theme }) => theme.colors.elements};
   font-size: 24px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   @media (min-width: 768px) {
@@ -32,13 +34,14 @@ const HeaderContainer = styled.header<{ theme: Theme }>`
   }
 `;
 const ThemeButton = styled.button<{ theme: Theme }>`
-  color: ${({ theme }) => theme.colors.text};
-  background-color: inherit;
   display: flex;
   align-items: center;
   gap: 5px;
+  background-color: inherit;
+  color: ${({ theme }) => theme.colors.text};
   border: none;
   font-weight: 600;
+  cursor: pointer;
 `;
 const Logo = styled.h2<{ theme: Theme }>`
   color: ${({ theme }) => theme.colors.text};
