@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import { Theme, useTheme } from "../theme/ThemeProvider";
-import { FiSearch } from "react-icons/fi";
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Theme, useTheme } from "../theme/ThemeProvider";
+import styled from "styled-components";
+import { FiSearch } from "react-icons/fi";
 
 const Filters = () => {
   const { theme } = useTheme();

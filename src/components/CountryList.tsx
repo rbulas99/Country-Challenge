@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { Theme, useTheme } from "../theme/ThemeProvider";
-import { useGetAllCountries } from "../api/getAllCountries";
-import DetailedInfo from "./DetailedInfo";
-import LoadingIndicator from "./LoadingIndicator";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Filters from "./Filters";
 import { useEffect } from "react";
 import { useDebounce } from 'use-debounce';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Theme, useTheme } from "../theme/ThemeProvider";
+import { useGetAllCountries } from "../api/getAllCountries";
+import styled from "styled-components";
+import DetailedInfo from "./DetailedInfo";
+import LoadingIndicator from "./LoadingIndicator";
+import Filters from "./Filters";
 
 const CountryList = () => {
   const { theme } = useTheme();
@@ -15,6 +15,7 @@ const CountryList = () => {
   const [debouncedSearchParams] = useDebounce(searchParams.get("name"), 500); // Debounce delay of 500 milliseconds
 
   const countrylist = useGetAllCountries(debouncedSearchParams);
+
 
   useEffect(() => {
     countrylist.refetch();

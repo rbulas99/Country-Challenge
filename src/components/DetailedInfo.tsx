@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { Theme, useTheme } from "../theme/ThemeProvider";
+import styled from "styled-components";
 
 type DetailedInfoProps = {
   label: string;

@@ -2,6 +2,9 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
 import { API_URL } from "../env";
 
+type TCurrency = any;
+type TLanguage = any;
+
 export type TDetailedCountry = {
   name: {
     common: string
@@ -18,14 +21,13 @@ export type TDetailedCountry = {
   flags:{
     png: string
   },
-  languages: any,
+  languages: TLanguage,
   region: string,
   subregion: string,
-  currencies: any,
+  currencies: TCurrency,
 };
 
 export const getCountry = async (countryName: string | undefined) => {
-  console.log('?')
   !countryName && Promise.reject('Country Name is undefined')
   const { data } = await axios({
     method: "get",
