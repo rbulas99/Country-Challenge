@@ -3,7 +3,7 @@ import { Theme, useTheme } from "../theme/ThemeProvider";
 
 type DetailedInfoProps = {
   label: string;
-  value: string | string[] | number;
+  value: string | string[] | number | undefined;
 };
 
 const DetailedInfo: React.FC<DetailedInfoProps> = ({ label, value }) => {
@@ -11,6 +11,9 @@ const DetailedInfo: React.FC<DetailedInfoProps> = ({ label, value }) => {
 
   if (Array.isArray(value)) {
     value = value.join(" | ");
+  }
+  if (typeof value === "number"){
+    value = value.toLocaleString('en-US')
   }
   
   return (

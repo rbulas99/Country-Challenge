@@ -2,47 +2,62 @@ import styled from "styled-components";
 import { Theme, useTheme } from "../theme/ThemeProvider";
 import { useGetAllCountries } from "../api/getAllCountries";
 import DetailedInfo from "./DetailedInfo";
-import { FiSearch } from "react-icons/fi";
+import LoadingIndicator from "./LoadingIndicator";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Filters from "./Filters";
+import { useEffect } from "react";
+import { useDebounce } from 'use-debounce';
 
 const CountryList = () => {
   const { theme } = useTheme();
-  const countrylist = useGetAllCountries();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams("");
+  const [debouncedSearchParams] = useDebounce(searchParams.get("name"), 500); // Debounce delay of 500 milliseconds
+
+  const countrylist = useGetAllCountries(debouncedSearchParams);
+
+  useEffect(() => {
+    countrylist.refetch();
+  }, [debouncedSearchParams]);
 
   return (
-    <Container theme={theme}>
-      <FilterWrapper>
-        <SearchInputWrapper theme={theme}>
-          <FiSearch />
-          <SearchInput theme={theme}></SearchInput>
-        </SearchInputWrapper>
-      </FilterWrapper>
-      <CountryListWrapper>
-        {countrylist.data?.map((country) => (
-          <CountryCard theme={theme} key={country.name.common}>
-            <ImageWrapper>
-              <img
-                src={country.flags.png}
-                alt={`Flag of ${country.name.common}`}
-              />
-            </ImageWrapper>
-            <CountryDetailInfo theme={theme}>
-              <CountryName theme={theme}>{country.name.common}</CountryName>
-              <DetailedInfo label={"Population"} value={country.population} />
-              <DetailedInfo label={"Region"} value={country.region} />
-              <DetailedInfo label={"Capital"} value={country.capital} />
-            </CountryDetailInfo>
-          </CountryCard>
-        ))}
-      </CountryListWrapper>
-    </Container>
+    <>
+      <Filters />
+      {countrylist.isFetching ? (
+        <LoadingIndicator />
+      ) : (
+        <>
+          <CountryListWrapper>
+            {countrylist.data?.map((country) => (
+              <CountryCard theme={theme} key={country.name.common}>
+                <ImageWrapper>
+                  <img
+                    src={country.flags.png}
+                    alt={`Flag of ${country.name.common}`}
+                  />
+                </ImageWrapper>
+                <CountryDetailInfo theme={theme}>
+                  <CountryName
+                    theme={theme}
+                    onClick={() => navigate(`/${country.cca3}`)}
+                  >
+                    {country.name.common}
+                  </CountryName>
+                  <DetailedInfo
+                    label={"Population"}
+                    value={country.population}
+                  />
+                  <DetailedInfo label={"Region"} value={country.region} />
+                  <DetailedInfo label={"Capital"} value={country.capital} />
+                </CountryDetailInfo>
+              </CountryCard>
+            ))}
+          </CountryListWrapper>
+        </>
+      )}
+    </>
   );
 };
-
-const Container = styled.main<{ theme: Theme }>`
-  min-height: calc(100vh - 56px);
-  padding: 40px;
-  background-color: ${({ theme }) => theme.colors.backgroundColor};
-`;
 
 const CountryListWrapper = styled.ul`
   display: flex;
@@ -84,46 +99,7 @@ const CountryName = styled.div<{ theme: Theme }>`
   color: ${({ theme }) => theme.colors.text};
   font-weight: 900;
   font-size: 16px;
+  cursor: pointer;
 `;
-const FilterWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-bottom: 40px;
-`;
-const SearchInputWrapper = styled.div<{ theme: Theme }>`
-  display: flex;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.elements};
-  color: ${({ theme }) => theme.colors.text};
-  border-radius: 10px;
-  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 0 50px;
-
-  @media (min-width: 768px) {
-    width: 40%;
-  }
-`;
-
-const SearchInput = styled.input.attrs({
-  type: "search",
-  placeholder: "Search for a country...",
-})<{ theme: Theme }>`
-  width: 100%;
-  margin-left: 15px;
-  padding: 15px 0;
-  color: ${({ theme }) => theme.colors.text};
-  background-color: inherit;
-  font-weight: 600;
-  border: none;
-  border-radius: inherit;
-  :focus {
-    outline: none;
-  }
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.text};
-  }
-`;
-
 
 export default CountryList;
