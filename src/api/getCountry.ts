@@ -3,7 +3,6 @@ import axios from "axios";
 import { API_URL } from "../env";
 
 type TCurrency = any;
-type TLanguage = any;
 
 export type TDetailedCountry = {
   name: {
@@ -21,10 +20,10 @@ export type TDetailedCountry = {
   flags:{
     png: string
   },
-  languages: TLanguage,
+  languages: unknown,
   region: string,
   subregion: string,
-  currencies: TCurrency,
+  currencies: unknown,
 };
 
 export const getCountry = async (countryName: string | undefined) => {

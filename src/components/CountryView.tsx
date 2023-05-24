@@ -10,7 +10,7 @@ import { BsArrowLeftShort } from "react-icons/bs";
 const CountryView = () => {
   const { name } = useParams();
   const { theme } = useTheme();
-  const { data, isError, isLoading, refetch } = useGetCountry(name);
+  const { data, isError, isLoading, isFetching, refetch } = useGetCountry(name);
   const navigate = useNavigate();
   const [languagesArr, setLanguageArr] = useState([""]);
   const [currency, setCurrency] = useState("");
@@ -32,7 +32,7 @@ const CountryView = () => {
 
   return (
     <Container>
-      {isLoading ? (
+      {isLoading || isFetching? (
         <LoadingIndicator />
       ) : (
         <>
