@@ -2,7 +2,6 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
 import { API_URL } from "../env";
 
-type TCurrency = any;
 
 export type TDetailedCountry = {
   name: {
